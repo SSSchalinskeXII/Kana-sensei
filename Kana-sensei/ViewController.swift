@@ -14,15 +14,19 @@ class ViewController: UIViewController {
     var answerPlacement:UInt32 = 0
     var r = 0
     var choices = [Int]()
+    var streakCount = 0
+    var button:UIButton = UIButton()
+    var delayInSeconds = 0.0
     
     let kana = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ"]
     let romaji = ["a", "ka", "sa", "ta", "na", "ha", "ma", "ya", "ra", "wa"]
     
-    // kana Label
+    // Labels
     @IBOutlet weak var lbl: UILabel!
+    @IBOutlet weak var streak: UILabel!
     
-    // button outlet
-    @IBOutlet weak var button1: UIButton!
+    // Buttons
+    @IBOutlet weak var button1: UIButton!       // Button Outlets (so border radius can be applied)
     @IBOutlet weak var button2: UIButton!
     @IBOutlet weak var button3: UIButton!
     @IBOutlet weak var button4: UIButton!
@@ -30,28 +34,41 @@ class ViewController: UIViewController {
     // action handler
     @IBAction func buttonTap(_ sender: UIButton) {
         
-        if (sender.tag == answerPlacement + 1) {
-            print("R")
-            view.backgroundColor = UIColor(red: 165/255, green: 1, blue: 75/255, alpha: 1)
-        } else {
-            print("W")
-            view.backgroundColor = UIColor(red: 1, green: 65/255, blue: 65/255, alpha: 1)
+        if (sender.tag == answerPlacement + 1) {                                                        // If correct
+            streakCount += 1                                                                            // Increment streak
+            view.backgroundColor = UIColor(red: 165/255, green: 1, blue: 75/255, alpha: 1)              // Make background Green
+            delayInSeconds = 0.5                                                                        // shorter delay in between questions
+        } else {                                                                                        // else
+            streakCount = 0                                                                             // reset streak
+            view.backgroundColor = UIColor(red: 1, green: 65/255, blue: 65/255, alpha: 1)               // Make background Red
+            button = view.viewWithTag(Int(answerPlacement) + 1) as! UIButton                            // Get right button
+            button.backgroundColor = UIColor(red: 165/255, green: 1, blue: 75/255, alpha: 1)            // Highlight the right button
+
+            delayInSeconds = 2.0                                                                        // Set delay to review wrong answer
         }
         
-        question = Int(arc4random_uniform(UInt32(kana.count)))
+        streak.text = "Streak: " + String(streakCount)                                                  // Set the Streak label
         
-        if (question != kana.count) {
-            nextQuestion()
-        } else {
-            question = 0
-            nextQuestion()
+        question = Int(arc4random_uniform(UInt32(kana.count)))                                          // Randomly pick a new question
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {                  // Delay inside code
+            
+            self.button.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)                  // change button background color back
+            self.view.backgroundColor = UIColor(red: 185/255, green: 245/255, blue: 255/255, alpha: 1)   // reset background color
+
+            if (self.question < self.kana.count) {                                                      // if the random question is a valid index
+                self.nextQuestion()                                                                     // call nextQuestion
+            } else {                                                                                    // else
+                self.question = 0                                                                       // default to question 0
+                self.nextQuestion()                                                                     // and call next question
+            }
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         nextQuestion()
         
-        button1.layer.cornerRadius = 10
+        button1.layer.cornerRadius = 10                                 // Set Border Radius
         button2.layer.cornerRadius = 10
         button3.layer.cornerRadius = 10
         button4.layer.cornerRadius = 10
@@ -60,11 +77,9 @@ class ViewController: UIViewController {
     
     func nextQuestion() {
         
-        lbl.text = kana[question]                                       // Set Label to Question with index qa
+        lbl.text = kana[question]                                       // Set Label to Question with index question
         
         answerPlacement = arc4random_uniform(4)                         // Pick Correct Answer Placement in Choices Array to be 0 - 3
-        
-        var button:UIButton = UIButton()
         
         while choices.count < 4 {                                       // while we have less than 4 numbers in our choices array
             if (choices.count == Int(answerPlacement)) {                // If our choices array is at the correct answer position
@@ -75,7 +90,7 @@ class ViewController: UIViewController {
                     choices.append(r)                                   // Add the index to the choices array
                 }
             }                                                           // If we have not arrived at the right answer placement and chose an r that already exists in choices,
-        }                                                               //choices.count will not have increased. Thus the while loop will continue.
+        }                                                               // choices.count will not have increased. Thus the while loop will continue.
                                                                         // At this point the choices array has been filled.
         for i in 1...4 {                                                // Time to add the options to the buttons.
             button = view.viewWithTag(i) as! UIButton                   // Create a button

@@ -82,8 +82,15 @@
                                     <action selector="buttonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BT9-W8-YJo"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Streak: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azh-gj-sXd">
+                                <rect key="frame" x="252" y="20" width="107" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.81770534039999998" green="0.91179605480000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.72549019607843135" green="0.96470588235294119" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="JyO-zt-23i" firstAttribute="top" secondItem="RWF-m6-UUl" secondAttribute="bottom" constant="90" id="AwD-Az-zgc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pyj-yR-JAQ" secondAttribute="trailing" constant="85" id="HXa-Nh-q1S"/>
@@ -108,6 +115,7 @@
                         <outlet property="button3" destination="JyO-zt-23i" id="brx-rW-A3b"/>
                         <outlet property="button4" destination="bVx-k6-9uP" id="mc8-cS-hT4"/>
                         <outlet property="lbl" destination="0Pq-iz-VX6" id="ure-Aj-alA"/>
+                        <outlet property="streak" destination="azh-gj-sXd" id="Njx-yI-GM9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
